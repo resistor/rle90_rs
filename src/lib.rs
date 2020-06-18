@@ -43,11 +43,11 @@ pub fn decode_rle90(in_buf: &[u8], out_buf: &mut [u8]) -> Result<usize, DecodeRL
 
             if in_buf[in_idx] != 0 {
                 // Case 1 - repeat last byte
-                let rep_count = in_buf[in_idx]-1;
+                let rep_count = in_buf[in_idx] - 1;
 
                 if rep_count == 0 {
                     // Repeat length of 0 is invalid.
-                    return Err(DecodeRLE90Error::InvalidEscapeSequence(in_idx-1));   
+                    return Err(DecodeRLE90Error::InvalidEscapeSequence(in_idx - 1));
                 }
 
                 for _ in 0..rep_count {
@@ -60,7 +60,7 @@ pub fn decode_rle90(in_buf: &[u8], out_buf: &mut [u8]) -> Result<usize, DecodeRL
                     out_idx += 1;
                 }
 
-                in_idx += 1;             
+                in_idx += 1;
             } else {
                 // Case 2 - escaped 0x90 byte
                 last_byte = 0x90u8;
@@ -77,7 +77,6 @@ pub fn decode_rle90(in_buf: &[u8], out_buf: &mut [u8]) -> Result<usize, DecodeRL
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -132,5 +131,4 @@ mod tests {
         let res = decode_rle90(&b1, &mut buffer);
         assert_eq!(res, Err(DecodeRLE90Error::InvalidEscapeSequence(1)));
     }
-
 }
